@@ -8,7 +8,7 @@ RUN npm ci
 RUN npx prisma generate
 
 COPY . .
-RUN npm run build && ls -la dist/
+RUN npm run build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
@@ -21,4 +21,4 @@ COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY package.json ./
 
 EXPOSE 3000
-CMD ["sh", "-c", "echo '=== /app/dist contents ===' && find /app/dist -maxdepth 2 2>/dev/null || echo 'dist not found' && npx prisma migrate deploy && npx prisma db seed && node dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node dist/main.js"]
