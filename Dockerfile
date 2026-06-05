@@ -21,4 +21,4 @@ COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY package.json ./
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma db push && node dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node dist/main.js"]
